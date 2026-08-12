@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="MeshLink - Serverless P2P BLE Mesh Communication & Chat Platform">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="MeshLink">
+  <title>MeshLink - BLE Mesh Chat</title>
+  <style>
+    body {
+      background-color: #020617;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+  </style>
+  <script src="flutter_bootstrap.js" async></script>
+</head>
+<body>
+  <script>
+    if (!window.flutterConfiguration) {
+      window.addEventListener('load', function(ev) {
+        if (typeof _flutter !== 'undefined' && _flutter.loader) {
+          _flutter.loader.loadEntrypoint({
+            serviceWorker: {
+              serviceWorkerVersion: null,
+            },
+            onEntrypointLoaded: function(engineInitializer) {
+              engineInitializer.initializeEngine().then(function(appRunner) {
+                appRunner.runApp();
+              });
+            }
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>

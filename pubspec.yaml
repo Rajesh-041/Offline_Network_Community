@@ -1,0 +1,26 @@
+name: meshlink
+description: "MeshLink - Serverless P2P BLE Mesh Communication & Chat Platform"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  provider: ^6.1.2
+  crypto: ^3.0.3
+  intl: ^0.20.2
+  uuid: ^4.3.3
+  collection: ^1.18.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

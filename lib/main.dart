@@ -1,5 +1,8 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'ble/ble_simulation.dart';
+import 'ble/ble_transport.dart';
 import 'crypto/identity_manager.dart';
 import 'data/database_helper.dart';
 import 'mesh/mesh_router.dart';
@@ -17,10 +20,18 @@ void main() {
   final translationEngine = TranslationEngine();
   final mlRouter = TinyMlAdaptiveRouter();
 
-  final simulationEngine = BleSimulationEngine(identityManager: identityManager);
-  
+  // Hardware Bluetooth Transport for physical devices (Android/iOS)
+  // Simulation Transport for Desktop/Web
+  final IBleTransport transport = (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
+      ? NativeBleTransport(identityManager: identityManager)
+      : BleSimulationEngine(identityManager: identityManager);
+
+  final simulationEngine = (transport is BleSimulationEngine)
+      ? transport
+      : BleSimulationEngine(identityManager: identityManager);
+
   final meshRouter = MeshRouter(
-    transport: simulationEngine,
+    transport: transport,
     identityManager: identityManager,
     dbHelper: dbHelper,
     mlRouter: mlRouter,
@@ -28,7 +39,7 @@ void main() {
   );
 
   // Start BLE mesh transport loop in background
-  simulationEngine.startScanAndAdvertise();
+  transport.startScanAndAdvertise();
 
   runApp(MeshLinkApp(
     meshRouter: meshRouter,

@@ -65,53 +65,7 @@ class BleSimulationEngine implements IBleTransport {
   }
 
   void _seedDefaultMeshNodes() {
-    _meshNodes['peer_alpha'] = SimulatedPeerNode(
-      id: 'peer_alpha',
-      name: 'Echo-Alpha',
-      fingerprint: 'A1B2C3D4',
-      publicKeyHex: 'pubkey_alpha_998877665544332211',
-      rssi: -52,
-      batteryLevel: 92,
-      hops: 1,
-      positionX: -120.0,
-      positionY: -80.0,
-    );
-
-    _meshNodes['peer_beta'] = SimulatedPeerNode(
-      id: 'peer_beta',
-      name: 'Vortex-Beta',
-      fingerprint: 'E5F67890',
-      publicKeyHex: 'pubkey_beta_112233445566778899',
-      rssi: -68,
-      batteryLevel: 74,
-      hops: 1,
-      positionX: 110.0,
-      positionY: -90.0,
-    );
-
-    _meshNodes['peer_gamma'] = SimulatedPeerNode(
-      id: 'peer_gamma',
-      name: 'Relay-Gamma',
-      fingerprint: '11223344',
-      publicKeyHex: 'pubkey_gamma_aabbccddeeff001122',
-      rssi: -81,
-      batteryLevel: 45,
-      hops: 2,
-      positionX: -40.0,
-      positionY: 130.0,
-    );
-
-    _meshNodes['peer_delta'] = SimulatedPeerNode(
-      id: 'peer_delta',
-      name: 'Outpost-Delta',
-      fingerprint: '99887766',
-      publicKeyHex: 'pubkey_delta_ffeeddccbbaa998877',
-      rssi: -89,
-      batteryLevel: 18,
-      hops: 3,
-      positionX: 130.0,
-      positionY: 110.0,
-    );
+    // Start empty - peers appear only when discovered or user-created
   }
 
   @override

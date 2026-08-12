@@ -5,8 +5,14 @@ import 'package:meshlink/crypto/identity_manager.dart';
 import 'package:meshlink/data/database_helper.dart';
 import 'package:meshlink/data/models.dart';
 import 'package:meshlink/ml/adaptive_router.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  setUpAll(() {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  });
+
   group('MeshLink Cryptographic Security Tests', () {
     test('X25519 Identity Key generation & fingerprint formatting', () {
       final identity = IdentityManager();

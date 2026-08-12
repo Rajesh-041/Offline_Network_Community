@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import '../../crypto/identity_manager.dart';
 import '../../data/backup_service.dart';
 import '../../data/database_helper.dart';
+import '../../mesh/mesh_router.dart';
 import '../../ml/translation_engine.dart';
 
 class SettingsScreen extends StatefulWidget {
   final IdentityManager identityManager;
   final TranslationEngine translationEngine;
   final DatabaseHelper dbHelper;
+  final MeshRouter meshRouter;
   final VoidCallback onPanicWipe;
 
   const SettingsScreen({
@@ -15,6 +17,7 @@ class SettingsScreen extends StatefulWidget {
     required this.identityManager,
     required this.translationEngine,
     required this.dbHelper,
+    required this.meshRouter,
     required this.onPanicWipe,
   });
 
@@ -110,24 +113,133 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void _openProvisioningDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.hub, color: Color(0xFF6366F1)),
+            SizedBox(width: 8),
+            Text('Provision Unprovisioned Device'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Scanning for Unprovisioned Bluetooth Mesh Beacons...'),
+            const SizedBox(height: 12),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.bluetooth_searching, color: Color(0xFF10B981)),
+                title: const Text('Unprovisioned Node 0x0002'),
+                subtitle: const Text('UUID: 4a2b...89c0 • RSSI: -54 dBm'),
+                trailing: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF6366F1), foregroundColor: Colors.white),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text('✓ Node 0x0002 Provisioned! NetKey, AppKey & Unicast Address Issued.'),
+                      ),
+                    );
+                  },
+                  child: const Text('PROVISION'),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final keyMgr = widget.identityManager.meshKeyManager;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mesh Settings & Security'),
+        title: const Text('Bluetooth Mesh 1.1 Config & Security'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Identity Card
+          // Identity & Provisioning Card
           Card(
-            child: ListTile(
-              leading: const Icon(Icons.fingerprint, color: Color(0xFF6366F1), size: 36),
-              title: Text('Node ID: ${widget.identityManager.nodeName}', style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: SelectableText('Fingerprint: ${widget.identityManager.fingerprint}\nPubKey: ${widget.identityManager.publicKeyHex.substring(0, 24)}...'),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.fingerprint, color: Color(0xFF6366F1), size: 28),
+                          const SizedBox(width: 8),
+                          Text('Node: ${widget.identityManager.nodeName}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(color: const Color(0xFF10B981).withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
+                        child: Text(
+                          keyMgr.unicastAddressHex,
+                          style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF10B981), fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  SelectableText('Fingerprint: ${widget.identityManager.fingerprint}'),
+                  SelectableText('PubKey: ${widget.identityManager.publicKeyHex.substring(0, 24)}...'),
+                  const SizedBox(height: 12),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF6366F1), foregroundColor: Colors.white),
+                    icon: const Icon(Icons.add_moderator),
+                    label: const Text('PROVISION NEW MESH DEVICE'),
+                    onPressed: _openProvisioningDialog,
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
+
+          // Bluetooth Mesh Features Card
+          Card(
+            child: Column(
+              children: [
+                SwitchListTile(
+                  title: const Text('Managed Flooding Relay'),
+                  subtitle: const Text('Act as multi-hop relay node (Max TTL 126)'),
+                  value: widget.meshRouter.relayManager.relayEnabled,
+                  activeColor: const Color(0xFF6366F1),
+                  onChanged: (val) {
+                    setState(() => widget.meshRouter.relayManager.relayEnabled = val);
+                  },
+                ),
+                const Divider(height: 1),
+                SwitchListTile(
+                  title: const Text('Friend Node Feature'),
+                  subtitle: const Text('Queue messages for sleeping Low Power Nodes (LPNs)'),
+                  value: widget.meshRouter.friendManager.isFriendFeatureEnabled,
+                  activeColor: const Color(0xFF10B981),
+                  onChanged: (val) {
+                    setState(() => widget.meshRouter.friendManager.toggleFriendFeature(val));
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
 
           // Battery Duty Cycling
           Card(

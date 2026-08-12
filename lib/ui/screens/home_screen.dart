@@ -127,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     identityManager: widget.identityManager,
                     translationEngine: widget.translationEngine,
                     dbHelper: widget.dbHelper,
+                    meshRouter: widget.meshRouter,
                     onPanicWipe: _onPanicWipe,
                   ),
                 ),

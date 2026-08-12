@@ -192,7 +192,7 @@ class DatabaseHelper {
     }
 
     final db = await database;
-    await db.insert('messages', message.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('messages', message.toDbMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   List<Message> getMessagesForChannel(String channelId) {

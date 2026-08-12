@@ -172,25 +172,68 @@ class Message {
     'translatedContent': translatedContent,
   };
 
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
-    id: json['id'],
-    senderId: json['senderId'],
-    senderFingerprint: json['senderFingerprint'],
-    senderName: json['senderName'],
-    recipientId: json['recipientId'],
-    channelId: json['channelId'],
-    content: json['content'],
-    timestamp: DateTime.parse(json['timestamp']),
-    type: MessageType.values.firstWhere((e) => e.name == json['type'], orElse: () => MessageType.text),
-    status: DeliveryStatus.values.firstWhere((e) => e.name == json['status'], orElse: () => DeliveryStatus.sent),
-    ttl: json['ttl'] ?? 7,
-    hopCount: json['hopCount'] ?? 0,
-    isEncrypted: json['isEncrypted'] ?? false,
-    relayPath: List<String>.from(json['relayPath'] ?? []),
-    voiceBytes: json['voiceBytes'] != null ? base64Decode(json['voiceBytes']) : null,
-    voiceDurationMs: json['voiceDurationMs'],
-    translatedContent: json['translatedContent'],
-  );
+  /// SQLite compatible Map conversion (booleans -> 1/0, List<String> -> JSON string)
+  Map<String, dynamic> toDbMap() => {
+    'id': id,
+    'senderId': senderId,
+    'senderFingerprint': senderFingerprint,
+    'senderName': senderName,
+    'recipientId': recipientId,
+    'channelId': channelId,
+    'content': content,
+    'timestamp': timestamp.toIso8601String(),
+    'type': type.name,
+    'status': status.name,
+    'ttl': ttl,
+    'hopCount': hopCount,
+    'isEncrypted': isEncrypted ? 1 : 0,
+    'relayPath': jsonEncode(relayPath),
+    'voiceBytes': voiceBytes != null ? base64Encode(voiceBytes!) : null,
+    'voiceDurationMs': voiceDurationMs,
+    'translatedContent': translatedContent,
+  };
+
+  factory Message.fromJson(Map<String, dynamic> json) {
+    dynamic rawRelay = json['relayPath'];
+    List<String> pathList = [];
+    if (rawRelay is String) {
+      try {
+        pathList = List<String>.from(jsonDecode(rawRelay));
+      } catch (e) {
+        pathList = [json['senderId'] ?? ''];
+      }
+    } else if (rawRelay is List) {
+      pathList = List<String>.from(rawRelay);
+    }
+
+    dynamic rawEncrypted = json['isEncrypted'];
+    bool encryptedBool = false;
+    if (rawEncrypted is bool) {
+      encryptedBool = rawEncrypted;
+    } else if (rawEncrypted is int) {
+      encryptedBool = rawEncrypted == 1;
+    }
+
+    return Message(
+      id: json['id'],
+      senderId: json['senderId'],
+      senderFingerprint: json['senderFingerprint'],
+      senderName: json['senderName'],
+      recipientId: json['recipientId'],
+      channelId: json['channelId'],
+      content: json['content'],
+      timestamp: DateTime.parse(json['timestamp']),
+      type: MessageType.values.firstWhere((e) => e.name == json['type'], orElse: () => MessageType.text),
+      status: DeliveryStatus.values.firstWhere((e) => e.name == json['status'], orElse: () => DeliveryStatus.sent),
+      ttl: json['ttl'] ?? 7,
+      hopCount: json['hopCount'] ?? 0,
+      isEncrypted: encryptedBool,
+      relayPath: pathList,
+      voiceBytes: json['voiceBytes'] != null ? base64Decode(json['voiceBytes']) : null,
+      voiceDurationMs: json['voiceDurationMs'],
+      translatedContent: json['translatedContent'],
+    );
+  }
 
   Message copyWith({DeliveryStatus? status, int? hopCount, List<String>? relayPath, String? translatedContent}) {
     return Message(

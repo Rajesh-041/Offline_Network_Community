@@ -102,26 +102,7 @@ class DatabaseHelper {
   }
 
   Future<void> _seedDefaultChannelsInDb(Database db) async {
-    final publicChan = Channel(
-      id: 'public',
-      name: 'Public Mesh',
-      description: 'Default broadcast channel for all nearby BLE peers',
-      isProtected: false,
-      creatorFingerprint: 'SYSTEM',
-      createdTime: DateTime.now().subtract(const Duration(days: 30)),
-    );
-
-    final sosChan = Channel(
-      id: 'emergency',
-      name: 'SOS Emergency Channel',
-      description: 'High priority broadcast alerts and disaster response',
-      isProtected: false,
-      creatorFingerprint: 'SYSTEM',
-      createdTime: DateTime.now().subtract(const Duration(days: 30)),
-    );
-
-    await db.insert('channels', _channelToMap(publicChan), conflictAlgorithm: ConflictAlgorithm.replace);
-    await db.insert('channels', _channelToMap(sosChan), conflictAlgorithm: ConflictAlgorithm.replace);
+    // Completely clean initialization - zero pre-seeded default or preview channels.
   }
 
   Future<void> _loadStateFromDb() async {

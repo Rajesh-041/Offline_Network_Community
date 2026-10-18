@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: const Color(0xFF6366F1).withOpacity(0.15),
+              backgroundColor: const Color(0xFF6366F1).withValues(alpha: 0.15),
               child: Text(
                 peer.fingerprint.substring(0, 2),
                 style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF6366F1)),
@@ -279,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             trailing: channel.isProtected
                 ? Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(color: Colors.amber.withOpacity(0.2), borderRadius: BorderRadius.circular(4)),
+                    decoration: BoxDecoration(color: Colors.amber.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(4)),
                     child: const Text('ENCRYPTED', style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.amber)),
                   )
                 : const Icon(Icons.chevron_right),

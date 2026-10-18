@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'mesh_packet.dart';
 
 class _ReassemblyBuffer {

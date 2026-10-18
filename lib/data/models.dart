@@ -172,7 +172,7 @@ class Message {
     'translatedContent': translatedContent,
   };
 
-  /// SQLite compatible Map conversion (booleans -> 1/0, List<String> -> JSON string)
+  /// SQLite compatible Map conversion (booleans -> 1/0, `List<String>` -> JSON string)
   Map<String, dynamic> toDbMap() => {
     'id': id,
     'senderId': senderId,

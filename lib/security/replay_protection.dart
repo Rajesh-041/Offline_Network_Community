@@ -1,4 +1,3 @@
-import 'dart:collection';
 
 /// Bluetooth Mesh 1.1 Replay Protection List (RPL) Manager.
 /// Tracks sequence numbers per source Unicast Address to reject replayed packets.

@@ -85,7 +85,7 @@ class _CreateChannelDialogState extends State<CreateChannelDialog> {
               title: const Text('Password Protected'),
               subtitle: const Text('Encrypts payload with Argon2id + AES-GCM'),
               value: _isProtected,
-              activeColor: const Color(0xFF6366F1),
+              activeThumbColor: const Color(0xFF6366F1),
               onChanged: (val) => setState(() => _isProtected = val),
             ),
             if (_isProtected) ...[

@@ -189,7 +189,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(color: const Color(0xFF10B981).withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
+                        decoration: BoxDecoration(color: const Color(0xFF10B981).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
                         child: Text(
                           keyMgr.unicastAddressHex,
                           style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF10B981), fontSize: 12),
@@ -221,7 +221,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text('Managed Flooding Relay'),
                   subtitle: const Text('Act as multi-hop relay node (Max TTL 126)'),
                   value: widget.meshRouter.relayManager.relayEnabled,
-                  activeColor: const Color(0xFF6366F1),
+                  activeThumbColor: const Color(0xFF6366F1),
                   onChanged: (val) {
                     setState(() => widget.meshRouter.relayManager.relayEnabled = val);
                   },
@@ -231,7 +231,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text('Friend Node Feature'),
                   subtitle: const Text('Queue messages for sleeping Low Power Nodes (LPNs)'),
                   value: widget.meshRouter.friendManager.isFriendFeatureEnabled,
-                  activeColor: const Color(0xFF10B981),
+                  activeThumbColor: const Color(0xFF10B981),
                   onChanged: (val) {
                     setState(() => widget.meshRouter.friendManager.toggleFriendFeature(val));
                   },
@@ -277,7 +277,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: const Text('On-Device ML Translation'),
               subtitle: const Text('Auto-translate messages received in foreign languages'),
               value: widget.translationEngine.isEnabled,
-              activeColor: const Color(0xFF6366F1),
+              activeThumbColor: const Color(0xFF6366F1),
               onChanged: (val) {
                 setState(() => widget.translationEngine.toggleTranslation(val));
               },

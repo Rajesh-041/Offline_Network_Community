@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:typed_data';
 import '../security/identity_manager.dart';
-import '../security/key_manager.dart';
 
 class UnprovisionedBeacon {
   final String deviceUuid;

@@ -35,7 +35,7 @@ class MeshRouter {
   final TranslationEngine translationEngine;
 
   // Layered Protocol Components
-  final MeshGattServer gattServer = MeshGattServer();
+  final MeshGattPeripheralServer gattServer = MeshGattPeripheralServer(identityManager: IdentityManager());
   final MeshGattClient gattClient = MeshGattClient();
   final MeshPacketReassembler reassembler = MeshPacketReassembler();
   final MeshNetworkMessageCache messageCache = MeshNetworkMessageCache();
@@ -147,7 +147,7 @@ class MeshRouter {
       messageCache.isDuplicate(frag.src, frag.seq, frag.messageId);
 
       final routeScores = mlRouter.predictOptimalRoutes(_activePeers, targetPeerId: message.recipientId);
-      final rawBlePkt = frag.toJson();
+      // rawBlePkt intentionally omitted – packet sent directly via _toBlePacket()
 
       if (routeScores.isNotEmpty) {
         await transport.sendDirectPacket(routeScores.first.peer.id, _toBlePacket(frag));

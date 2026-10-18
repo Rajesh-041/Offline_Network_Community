@@ -11,7 +11,7 @@ import 'ml/translation_engine.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize core services
@@ -20,8 +20,9 @@ void main() {
   final translationEngine = TranslationEngine();
   final mlRouter = TinyMlAdaptiveRouter();
 
-  // Hardware Bluetooth Transport for physical devices (Android/iOS)
-  // Simulation Transport for Desktop/Web
+  // Auto-select transport:
+  // • Android / iOS  → Real hardware flutter_blue_plus BLE transport
+  // • Windows / Web  → Simulation transport (for desktop testing)
   final IBleTransport transport = (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
       ? NativeBleTransport(identityManager: identityManager)
       : BleSimulationEngine(identityManager: identityManager);
@@ -38,7 +39,9 @@ void main() {
     translationEngine: translationEngine,
   );
 
-  // Start BLE mesh transport loop in background
+  // Start BLE scanning & advertising in background
+  // On Android: requests permissions then starts flutter_blue_plus scan
+  // On Desktop: starts BLE simulation engine
   transport.startScanAndAdvertise();
 
   runApp(MeshLinkApp(

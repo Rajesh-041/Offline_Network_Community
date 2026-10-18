@@ -1,4 +1,3 @@
-import 'neighbor_table.dart';
 
 class TopologyNode {
   final int unicastAddress;

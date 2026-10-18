@@ -1,5 +1,4 @@
 import 'dart:async';
-import '../data/models.dart';
 
 enum PartitionState { connected, partitioned, synchronizing }
 

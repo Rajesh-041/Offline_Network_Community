@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter/foundation.dart';
 import '../data/models.dart';
 import '../crypto/identity_manager.dart';
 import 'ble_packet.dart';

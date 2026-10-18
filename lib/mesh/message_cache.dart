@@ -1,4 +1,3 @@
-import 'dart:collection';
 
 class CacheEntry {
   final int srcAddress;

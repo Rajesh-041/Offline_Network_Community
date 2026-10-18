@@ -55,7 +55,7 @@ class _SosScreenState extends State<SosScreen> with SingleTickerProviderStateMix
     return Scaffold(
       appBar: AppBar(
         title: const Text('Emergency SOS Center', style: TextStyle(color: Colors.redAccent)),
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        backgroundColor: Colors.redAccent.withValues(alpha: 0.1),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -69,7 +69,7 @@ class _SosScreenState extends State<SosScreen> with SingleTickerProviderStateMix
                   padding: EdgeInsets.all(20 + (_beaconController.value * 12)),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.redAccent.withOpacity(0.2 * _beaconController.value + 0.1),
+                    color: Colors.redAccent.withValues(alpha: 0.2 * _beaconController.value + 0.1),
                   ),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -104,7 +104,7 @@ class _SosScreenState extends State<SosScreen> with SingleTickerProviderStateMix
             ),
             const SizedBox(height: 20),
             Card(
-              color: Colors.redAccent.withOpacity(0.1),
+              color: Colors.redAccent.withValues(alpha: 0.1),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(

@@ -1,13 +1,7 @@
-import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:meshlink/crypto/crypto_engine.dart';
 import 'package:meshlink/crypto/identity_manager.dart';
-import 'package:meshlink/data/database_helper.dart';
-import 'package:meshlink/data/models.dart';
 import 'package:meshlink/mesh/message_cache.dart';
-import 'package:meshlink/mesh/relay_manager.dart';
 import 'package:meshlink/mesh/ttl_manager.dart';
-import 'package:meshlink/ml/adaptive_router.dart';
 import 'package:meshlink/packet/fragmenter.dart';
 import 'package:meshlink/packet/mesh_packet.dart';
 import 'package:meshlink/packet/reassembler.dart';
@@ -63,7 +57,6 @@ void main() {
 
   group('SAR Segmentation & Reassembly (Feature 9) Tests', () {
     test('Large Payload Segmentation and Reassembly Roundtrip', () {
-      final fragmenter = MeshPacketFragmenter();
       final reassembler = MeshPacketReassembler();
 
       final longPayload = 'Fragment_A_' * 50; // Oversized payload

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import '../packet/mesh_packet.dart';
 import 'gatt_server.dart';
@@ -11,7 +10,7 @@ class MeshGattClient {
 
   Future<bool> connectToPeer(String peerId) async {
     _connectedPeers[peerId] = true;
-    debugPrint('GATT Client connected to peer $peerId on Service ${MeshGattServer.serviceUuid}');
+    debugPrint('GATT Client connected to peer $peerId on Service $kServiceUuid');
     return true;
   }
 

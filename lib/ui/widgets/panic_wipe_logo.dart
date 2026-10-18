@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 
 class PanicWipeLogo extends StatefulWidget {
@@ -12,7 +11,6 @@ class PanicWipeLogo extends StatefulWidget {
 
 class _PanicWipeLogoState extends State<PanicWipeLogo> with SingleTickerProviderStateMixin {
   late AnimationController _animController;
-  Timer? _holdTimer;
   bool _isHolding = false;
 
   @override

@@ -86,7 +86,7 @@ class _MeshMapScreenState extends State<MeshMapScreen> with SingleTickerProvider
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
@@ -188,7 +188,7 @@ class MeshGraphPainter extends CustomPainter {
         lineColor = Colors.redAccent;
       }
 
-      paintLine.color = lineColor.withOpacity(0.5);
+      paintLine.color = lineColor.withValues(alpha: 0.5);
       canvas.drawLine(targetPos, pos, paintLine);
 
       // Pulse particle along link line
@@ -200,7 +200,7 @@ class MeshGraphPainter extends CustomPainter {
     // 2. Draw Local Node (Center)
     final localPaint = Paint()..color = const Color(0xFF6366F1);
     canvas.drawCircle(center, 24, localPaint);
-    canvas.drawCircle(center, 24 + (pulseValue * 12), Paint()..color = const Color(0xFF6366F1).withOpacity(1.0 - pulseValue)..style = PaintingStyle.stroke..strokeWidth = 2);
+    canvas.drawCircle(center, 24 + (pulseValue * 12), Paint()..color = const Color(0xFF6366F1).withValues(alpha: 1.0 - pulseValue)..style = PaintingStyle.stroke..strokeWidth = 2);
 
     final textPainter = TextPainter(
       text: const TextSpan(

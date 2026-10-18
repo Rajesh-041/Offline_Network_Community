@@ -55,9 +55,9 @@ class HopIndicator extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
           decoration: BoxDecoration(
-            color: badgeColor.withOpacity(0.18),
+            color: badgeColor.withValues(alpha: 0.18),
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: badgeColor.withOpacity(0.4), width: 0.8),
+            border: Border.all(color: badgeColor.withValues(alpha: 0.4), width: 0.8),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
